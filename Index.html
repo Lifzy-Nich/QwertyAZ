@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>QwertyAz — The Arrangement</title>
+  <!-- Menggunakan Tailwind CSS via CDN untuk kemudahan spacing & utility modern -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Inter (sans-serif elegan) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+  <style>
+  /* Kustomisasi tambahan untuk mencapai kemewahan dark luxury dengan aksen emas halus */
+  body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background-color: #121212; /* Deep Charcoal */
+    letter-spacing: 0.01em;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 1.5rem;
+  }
+
+  /* Glassmorphic card dengan nuansa gelap dan bayangan lembut */
+  .game-container {
+    background: rgba(18, 18, 18, 0.85);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(197, 160, 89, 0.15);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(197, 160, 89, 0.1) inset;
+    max-width: 800px;
+    width: 100%;
+    transition: all 0.2s ease;
+  }
+
+  /* Aksen emas lembut untuk elemen interaktif & border bawah */
+  .gold-accent {
+    color: #C5A059;
+  }
+  .gold-border-bottom {
+    border-bottom: 2px solid rgba(197, 160, 89, 0.5);
+  }
+  .slot-active {
+    border-color: #C5A059;
+    box-shadow: 0 4px 12px rgba(197, 160, 89, 0.2);
+  }
+    /* Slot huruf (tempat menyusun) dengan desain minimalis modern */
+.letter-slot {
+  width: 4.5rem;
+  height: 5rem;
+  background: #1e1e1e;
+  border: 2px solid #2a2a2a;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: #F5F5F5;
+  transition: border 0.15s ease, box-shadow 0.2s ease, transform 0.1s;
+  box-shadow: 0 8px 0 #0a0a0a;
+}
+
+/* Efek ketika slot terisi */
+.letter-slot.filled {
+  border-color: #C5A059;
+  background: #2a241a;
+  box-shadow: 0 8px 0 #5e4a2b;
+}
+
+/* Tombol huruf pilihan (kaya akan aksen emas saat hover) */
+.choice-btn {
+  width: 4rem;
+  height: 4rem;
+  background: #1e1e1e;
+  border: 1px solid #3a3a3a;
+  border-radius: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 500;
+  color: #F5F5F5;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  box-shadow: 0 6px 0 #0c0c0c;
+  user-select: none;
+}
+
+.choice-btn:active {
+  transform: translateY(5px);
+  box-shadow: 0 1px 0 #0c0c0c;
+}
+
+.choice-btn:hover:not(.used) {
+  border-color: #C5A059;
+  background: #2c2c2c;
+}
+    /* Kondisi huruf yang sudah dipakai (tidak bisa diklik) */
+.choice-btn.used {
+  opacity: 0.25;
+  filter: grayscale(0.8);
+  pointer-events: none;
+  border-color: #3a3a3a;
+  transform: scale(0.95);
+}
+
+/* Tombol reset kecil (minimalis) */
+.reset-btn {
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 3rem;
+  padding: 0.6rem 1.8rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #aaaaaa;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(4px);
+}
+
+.reset-btn:hover {
+  border-color: #C5A059;
+  color: #F5F5F5;
+  background: rgba(197, 160, 89, 0.05);
+}
+
+/* Level dan skor badge minimalis */
+.stat-badge {
+  background: #1a1a1a;
+  border-radius: 3rem;
+  padding: 0.3rem 1.2rem;
+  border: 1px solid #2a2a2a;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.stat-badge span {
+  color: #C5A059;
+  font-weight: 600;
+  margin-left: 0.25rem;
+}
+        /* Responsif: untuk mobile kecil, slot sedikit mengecil */
+    @media (max-width: 500px) {
+      .letter-slot {
+        width: 3.5rem;
+        height: 4.2rem;
+        font-size: 1.8rem;
+      }
+      .choice-btn {
+        width: 3.2rem;
+        height: 3.2rem;
+        font-size: 1.6rem;
+      }
+      .game-container {
+        padding: 1rem !important;
+      }
+    }
+
+    /* Hilangkan spinner di number (tidak dipakai) */
+    input[type=number]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Kartu utama game dengan nuansa dark luxury -->
+  <div class="game-container rounded-3xl p-6 md:p-8 mx-auto">
+
+    <!-- Header: hanya nama game (minimalis) + statistik kecil sejajar -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+      <h1 class="text-4xl md:text-5xl font-light tracking-wider gold-accent" style="text-shadow: 0 2px 8px rgba(197,160,89,0.20);">QwertyAz</h1>
+      
+      <!-- Grup stat (skor & level) sangat tipis -->
+      <div class="flex gap-3">
+        <div class="stat-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8 21 12 17 16 21"/></svg>
+          Skor <span id="scoreDisplay">0</span>
+        </div>
+        <div class="stat-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Level <span id="levelDisplay">1</span>
+        </div>
+      </div>
+    </div>
+      <!-- AREA SLOT KOSONG (tempat menyusun huruf) -->
+  <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-10 px-2">
+    <!-- 5 slot elegan, akan diisi secara dinamis via JS -->
+    <div id="slot1" class="letter-slot" data-index="0"></div>
+    <div id="slot2" class="letter-slot" data-index="1"></div>
+    <div id="slot3" class="letter-slot" data-index="2"></div>
+    <div id="slot4" class="letter-slot" data-index="3"></div>
+    <div id="slot5" class="letter-slot" data-index="4"></div>
+  </div>
+
+  <!-- PILIHAN HURUF ACAK (tombol-tombol) -->
+  <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-10" id="letterChoicesContainer">
+    <!-- diisi javascript -->
+  </div>
+
+  <!-- RESET / HAPUS (tombol diskrit) -->
+  <div class="flex justify-center">
+    <button id="resetGameBtn" class="reset-btn group flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-[#C5A059] transition"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      Hapus & Atur Ulang
+    </button>
+  </div>
+  </div>
+  <script>
+  (function(){
+    // ---------- Vanilla JavaScript (ES6) ----------
+    // Konfigurasi huruf dan target (kata dapat diubah nanti, level memengaruhi target)
+    const TARGET_WORDS = [
+      ['Q','W','E','R','T'],  // level 1 (5 huruf)
+      ['Y','U','I','O','P'],  // level 2
+      ['A','S','D','F','G'],  // level 3
+      ['H','J','K','L','Z'],  // level 4
+      ['Z','X','C','V','B']   // level 5 (bisa disesuaikan)
+    ];
+
+    // State game
+    let currentLevel = 1;                // level 1-indexed
+    let currentTarget = [...TARGET_WORDS[0]]; // target huruf level sekarang
+    let slots = ['', '', '', '', ''];          // isi slot (index 0-4)
+    let availableLetters = [];            // kumpulan huruf acak (berisi 5 huruf)
+    let usedInChoices = [false, false, false, false, false]; // status klik tiap tombol pilihan
+    let score = 0;
+    // Elemen DOM
+const slotEls = [
+  document.getElementById('slot1'),
+  document.getElementById('slot2'),
+  document.getElementById('slot3'),
+  document.getElementById('slot4'),
+  document.getElementById('slot5')
+];
+const choicesContainer = document.getElementById('letterChoicesContainer');
+const resetBtn = document.getElementById('resetGameBtn');
+const scoreSpan = document.getElementById('scoreDisplay');
+const levelSpan = document.getElementById('levelDisplay');
+    // Helper: memperbarui tampilan slot sesuai array slots
+function renderSlots() {
+  for (let i = 0; i < 5; i++) {
+    slotEls[i].textContent = slots[i] || '';
+    if (slots[i] !== '') {
+      slotEls[i].classList.add('filled');
+    } else {
+      slotEls[i].classList.remove('filled');
+    }
+  }
+}
+
+// Helper: mengacak huruf (dari currentTarget) untuk ditampilkan sebagai pilihan
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// Mengacak availableLetters berdasarkan target saat ini
+function refreshAvailableLetters() {
+  // availableLetters adalah salinan acak dari currentTarget
+  availableLetters = shuffleArray([...currentTarget]);
+  usedInChoices = [false, false, false, false, false]; // reset status kepakai
+}
+
+    // Merender semua tombol pilihan berdasarkan availableLetters & usedInChoices
+function renderChoices() {
+  let htmlStr = '';
+  for (let i = 0; i < availableLetters.length; i++) {
+    const letter = availableLetters[i];
+    const isUsed = usedInChoices[i];
+    const usedClass = isUsed ? 'used' : '';
+    htmlStr += `<div class="choice-btn ${usedClass}" data-choice-index="${i}">${letter}</div>`;
+  }
+  choicesContainer.innerHTML = htmlStr;
+}
+
+// Cek apakah semua slot sudah terisi penuh
+function areSlotsFull() {
+  return slots.every(val => val !== '');
+}
+
+// Validasi susunan huruf apakah sesuai target (menang)
+function isCorrectArrangement() {
+  for (let i = 0; i < 5; i++) {
+    if (slots[i] !== currentTarget[i]) return false;
+  }
+  return true;
+}
+    // Proses ketika user berhasil menyusun kata dengan benar
+function handleWin() {
+  // Tambah skor (base 100 * level)
+  score += 100 * currentLevel;
+  updateScoreAndLevel();
+
+  // Naikkan level jika masih ada
+  if (currentLevel < TARGET_WORDS.length) {
+    currentLevel++;
+    currentTarget = [...TARGET_WORDS[currentLevel - 1]]; // array index ke level-1
+
+    // Reset slot dan available huruf
+    slots = ['', '', '', '', ''];
+    refreshAvailableLetters();
+    renderSlots();
+    renderChoices();
+    updateScoreAndLevel();
+
+    // Beri sedikit umpan balik halus (opsional: tambah class)
+  } else {
+    // max level tercapai, bisa reset permainan atau beri notifikasi tenang
+    // untuk pengalaman mulus: reset ke level 1, skor ditambah bonus
+    score += 500; // bonus
+    currentLevel = 1;
+    currentTarget = [...TARGET_WORDS[0]];
+    slots = ['', '', '', '', ''];
+    refreshAvailableLetters();
+    renderSlots();
+    renderChoices();
+    updateScoreAndLevel();
+    // small visual feedback: border emas berkedip (opsional)
+  }
+}
+
+// Update tampilan skor & level
+function updateScoreAndLevel() {
+  scoreSpan.textContent = score;
+  levelSpan.textContent = currentLevel;
+}
+    // Event listener untuk tombol pilihan (delegasi)
+choicesContainer.addEventListener('click', (e) => {
+  const choiceDiv = e.target.closest('.choice-btn');
+  if (!choiceDiv) return;
+  if (choiceDiv.classList.contains('used')) return; // sudah dipakai
+
+  const idx = choiceDiv.dataset.choiceIndex;
+  if (idx === undefined) return;
+
+  const letter = availableLetters[idx];
+
+  // Cari slot kosong pertama
+  const emptySlotIndex = slots.findIndex(val => val === '');
+  if (emptySlotIndex === -1) {
+    // semua slot penuh, tidak bisa tambah; bisa hapus dulu (opsional abaikan)
+    return;
+  }
+
+  // Isi slot dengan huruf yang dipilih
+  slots[emptySlotIndex] = letter;
+  // Tandai tombol pilihan sebagai used
+  usedInChoices[idx] = true;
+
+  // Update UI
+  renderSlots();
+  renderChoices();
+
+  // Cek apakah semua slot sudah penuh
+  if (areSlotsFull()) {
+    // Validasi apakah susunannya tepat
+    if (isCorrectArrangement()) {
+      handleWin();
+    } else {
+      // susunan salah: tidak ada feedback selain reset diam-diam? kita beri reset otomatis?
+      // sesuai permainan umum: salah maka kocok ulang pilihan & reset slot
+      // lebih baik reset pilihan (mengacak ulang availableLetters) dan kosongkan slot
+      // namun skor tidak bertambah.
+      // Untuk UX lebih baik kita reset dengan mulus.
+      // TAPI, jangan langsung reset sebelum user sempat lihat. Biarkan saja, user bisa tekan reset manual.
+      // atau kita beri opsi otomatis dengan jeda? saya pilih: jika salah, secara otomatis kosongkan dan shuffle pilihan setelah 0.2s? agak aneh.
+      // Alternatif lebih baik: saat semua slot terisi, tapi salah, kita langsung kosongkan slot dan kembalikan huruf2 ke available (tandai ulang used).
+      // Itu lebih fair: seperti "coba lagi" instan.
+
+      // Kembalikan semua huruf ke available (reset usedInChoices) dan kosongkan slots
+      // tapi untuk mempertahankan kesan profesional, kita cukup reset tanpa mengurangi skor
+      // namun agar tidak stuck: kosongkan slot, dan set usedInChoices semua false
+      slots = ['', '', '', '', ''];
+      usedInChoices.fill(false); // semua huruf bisa dipilih lagi
+
+      // opsional: acak ulang availableLetters (supaya tidak urut sama)
+      availableLetters = shuffleArray([...availableLetters]); // shuffle tetap berdasarkan komposisi sama
+
+      renderSlots();
+      renderChoices();
+    }
+  }
+});
+          // Reset penuh (tombol reset)
+      function resetGameFull() {
+        // Reset ke level 1, skor 0, target awal
+        currentLevel = 1;
+        currentTarget = [...TARGET_WORDS[0]];
+        score = 0;
+        slots = ['', '', '', '', ''];
+        refreshAvailableLetters(); // set availableLetters acak dari target
+        renderSlots();
+        renderChoices();
+        updateScoreAndLevel();
+      }
+
+      resetBtn.addEventListener('click', resetGameFull);
+
+      // Inisialisasi pertama kali
+      (function init() {
+        currentTarget = [...TARGET_WORDS[0]]; // level 1
+        slots = ['', '', '', '', ''];
+        refreshAvailableLetters(); // acak
+        renderSlots();
+        renderChoices();
+        updateScoreAndLevel();
+      })();
+
+      // OPTIONAL: Animasi halus untuk slot (telah dihandle css transition)
+      // tidak ada overlapping karena flex wrap rapih
+
+    })();
+  </script>
+</body>
+</html>
