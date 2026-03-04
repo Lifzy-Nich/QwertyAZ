@@ -4,192 +4,530 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>QwertyAz — The Arrangement</title>
-  <!-- Menggunakan Tailwind CSS via CDN untuk kemudahan spacing & utility modern -->
+  <!-- Menggunakan Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Inter (sans-serif elegan) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+  <!-- Font Inter dan Playfair Display untuk sentuhan elegan -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome untuk ikon yang lebih kaya -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-  /* Kustomisasi tambahan untuk mencapai kemewahan dark luxury dengan aksen emas halus */
+  /* Kustomisasi dengan efek premium dan animasi yang lebih halus */
+  :root {
+    --deep-charcoal: #121212;
+    --rich-black: #0A0A0A;
+    --gold-primary: #C5A059;
+    --gold-light: #D4AF37;
+    --gold-glow: rgba(197, 160, 89, 0.3);
+    --ivory-white: #F5F5F5;
+    --steel-gray: #2A2A2A;
+  }
+
   body {
-    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    background-color: #121212; /* Deep Charcoal */
-    letter-spacing: 0.01em;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(circle at 50% 50%, #1a1a1a, var(--deep-charcoal) 80%, var(--rich-black));
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0;
-    padding: 1.5rem;
+    padding: 1rem;
+    position: relative;
+    overflow-x: hidden;
   }
 
-  /* Glassmorphic card dengan nuansa gelap dan bayangan lembut */
-  .game-container {
-    background: rgba(18, 18, 18, 0.85);
-    backdrop-filter: blur(2px);
-    border: 1px solid rgba(197, 160, 89, 0.15);
-    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(197, 160, 89, 0.1) inset;
-    max-width: 800px;
+  /* Partikel latar belakang dinamis */
+  body::before {
+    content: '';
+    position: absolute;
     width: 100%;
-    transition: all 0.2s ease;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(197, 160, 89, 0.03) 0%, transparent 20%),
+      radial-gradient(circle at 80% 70%, rgba(197, 160, 89, 0.03) 0%, transparent 25%),
+      radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 30%),
+      radial-gradient(circle at 90% 20%, rgba(197, 160, 89, 0.02) 0%, transparent 35%);
+    pointer-events: none;
+    z-index: 0;
   }
 
-  /* Aksen emas lembut untuk elemen interaktif & border bawah */
-  .gold-accent {
-    color: #C5A059;
+  /* Efek glassmorphic yang lebih mewah */
+  .game-container {
+    background: rgba(18, 18, 18, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    box-shadow: 
+      0 30px 60px -15px rgba(0, 0, 0, 0.8),
+      0 0 0 1px rgba(197, 160, 89, 0.15) inset,
+      0 0 30px rgba(197, 160, 89, 0.1);
+    max-width: 900px;
+    width: 100%;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 10;
+    animation: floatIn 0.8s ease-out;
   }
-  .gold-border-bottom {
-    border-bottom: 2px solid rgba(197, 160, 89, 0.5);
+
+  .game-container:hover {
+    box-shadow: 
+      0 40px 70px -15px rgba(0, 0, 0, 0.9),
+      0 0 0 1px rgba(197, 160, 89, 0.3) inset,
+      0 0 50px rgba(197, 160, 89, 0.2);
+    border-color: rgba(197, 160, 89, 0.3);
   }
-  .slot-active {
-    border-color: #C5A059;
-    box-shadow: 0 4px 12px rgba(197, 160, 89, 0.2);
+
+  @keyframes floatIn {
+    0% {
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
-    /* Slot huruf (tempat menyusun) dengan desain minimalis modern */
+
+  /* Header dengan efek kilau */
+  .game-title {
+    font-family: 'Playfair Display', serif;
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-light), var(--gold-primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(197, 160, 89, 0.5);
+    position: relative;
+    display: inline-block;
+  }
+
+  .game-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-primary), var(--gold-light), var(--gold-primary), transparent);
+    animation: shine 3s infinite;
+  }
+
+  @keyframes shine {
+    0% { transform: translateX(-100%); }
+    40%, 60% { transform: translateX(0); }
+    100% { transform: translateX(100%); }
+  }
+    /* Slot dengan efek 3D dan animasi memukau */
 .letter-slot {
-  width: 4.5rem;
-  height: 5rem;
-  background: #1e1e1e;
-  border: 2px solid #2a2a2a;
-  border-radius: 1rem;
+  width: 5rem;
+  height: 5.5rem;
+  background: linear-gradient(145deg, #1e1e1e, #161616);
+  border: 2px solid var(--steel-gray);
+  border-radius: 1.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.2rem;
-  font-weight: 500;
-  color: #F5F5F5;
-  transition: border 0.15s ease, box-shadow 0.2s ease, transform 0.1s;
-  box-shadow: 0 8px 0 #0a0a0a;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--ivory-white);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 
+    0 10px 0 #0a0a0a,
+    0 0 0 1px rgba(197, 160, 89, 0.1) inset,
+    0 0 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Efek ketika slot terisi */
+.letter-slot::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.letter-slot:hover::before {
+  opacity: 1;
+}
+
 .letter-slot.filled {
-  border-color: #C5A059;
-  background: #2a241a;
-  box-shadow: 0 8px 0 #5e4a2b;
+  border-color: var(--gold-primary);
+  background: linear-gradient(145deg, #2a241a, #1f1a13);
+  box-shadow: 
+    0 10px 0 #5e4a2b,
+    0 0 30px var(--gold-glow);
+  transform: translateY(-2px);
+  animation: pulse 2s infinite;
 }
 
-/* Tombol huruf pilihan (kaya akan aksen emas saat hover) */
+.letter-slot.filled::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 1.2rem;
+  box-shadow: 0 0 20px var(--gold-primary);
+  opacity: 0.5;
+  animation: glowPulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: translateY(-2px); }
+  50% { transform: translateY(-4px); }
+  100% { transform: translateY(-2px); }
+}
+
+@keyframes glowPulse {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+  100% { opacity: 0.3; }
+}
+
+/* Slot kosong dengan efek garis bawah berkilau */
+.letter-slot:empty::after {
+  content: '_';
+  color: var(--steel-gray);
+  font-size: 2rem;
+  opacity: 0.7;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.3; }
+}
+    /* Tombol pilihan dengan efek haptic visual */
 .choice-btn {
-  width: 4rem;
-  height: 4rem;
-  background: #1e1e1e;
-  border: 1px solid #3a3a3a;
-  border-radius: 1rem;
+  width: 4.5rem;
+  height: 4.5rem;
+  background: linear-gradient(145deg, #1e1e1e, #151515);
+  border: 2px solid #3a3a3a;
+  border-radius: 1.2rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  font-weight: 500;
-  color: #F5F5F5;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--ivory-white);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.2);
-  box-shadow: 0 6px 0 #0c0c0c;
-  user-select: none;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 
+    0 8px 0 #0c0c0c,
+    0 0 0 1px rgba(197, 160, 89, 0.1) inset;
+  position: relative;
+  transform-origin: center;
 }
 
-.choice-btn:active {
-  transform: translateY(5px);
-  box-shadow: 0 1px 0 #0c0c0c;
+.choice-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 1.2rem;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
-.choice-btn:hover:not(.used) {
-  border-color: #C5A059;
-  background: #2c2c2c;
+.choice-btn:not(.used):hover {
+  transform: translateY(-4px) scale(1.05);
+  border-color: var(--gold-primary);
+  background: linear-gradient(145deg, #252525, #1e1e1e);
+  box-shadow: 
+    0 10px 0 #2a2a2a,
+    0 0 30px var(--gold-glow);
 }
-    /* Kondisi huruf yang sudah dipakai (tidak bisa diklik) */
+
+.choice-btn:not(.used):hover::before {
+  opacity: 1;
+}
+
+.choice-btn:not(.used):active {
+  transform: translateY(4px) scale(0.98);
+  box-shadow: 0 4px 0 #0c0c0c;
+}
+
+/* Efek ripple saat diklik */
+.choice-btn:not(.used)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(197, 160, 89, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, opacity 0.3s;
+  pointer-events: none;
+}
+
+.choice-btn:not(.used):active::after {
+  width: 100px;
+  height: 100px;
+  opacity: 0;
+}
+
 .choice-btn.used {
   opacity: 0.25;
-  filter: grayscale(0.8);
-  pointer-events: none;
-  border-color: #3a3a3a;
-  transform: scale(0.95);
+  filter: grayscale(1);
+  transform: scale(0.9);
+  box-shadow: 0 4px 0 #0c0c0c;
+  cursor: not-allowed;
+  animation: fadeOut 0.3s ease-out;
 }
 
-/* Tombol reset kecil (minimalis) */
-.reset-btn {
-  background: transparent;
-  border: 1px solid #2a2a2a;
-  border-radius: 3rem;
-  padding: 0.6rem 1.8rem;
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: #aaaaaa;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-  backdrop-filter: blur(4px);
+@keyframes fadeOut {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.25; }
 }
-
-.reset-btn:hover {
-  border-color: #C5A059;
-  color: #F5F5F5;
-  background: rgba(197, 160, 89, 0.05);
-}
-
-/* Level dan skor badge minimalis */
+    /* Stat badge dengan efek premium */
 .stat-badge {
-  background: #1a1a1a;
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(5px);
   border-radius: 3rem;
-  padding: 0.3rem 1.2rem;
-  border: 1px solid #2a2a2a;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid rgba(197, 160, 89, 0.2);
   color: #e0e0e0;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 400;
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.6rem;
+  transition: all 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.stat-badge:hover {
+  border-color: var(--gold-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(197, 160, 89, 0.2);
+}
+
+.stat-badge i {
+  color: var(--gold-primary);
+  font-size: 1rem;
 }
 
 .stat-badge span {
-  color: #C5A059;
-  font-weight: 600;
-  margin-left: 0.25rem;
+  color: var(--gold-primary);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-left: 0.2rem;
+  text-shadow: 0 0 10px rgba(197, 160, 89, 0.5);
 }
-        /* Responsif: untuk mobile kecil, slot sedikit mengecil */
+
+/* Tombol reset dengan efek mewah */
+.reset-btn {
+  background: linear-gradient(145deg, transparent, rgba(197, 160, 89, 0.05));
+  border: 2px solid rgba(197, 160, 89, 0.3);
+  border-radius: 3rem;
+  padding: 0.8rem 2.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #cccccc;
+  transition: all 0.3s;
+  backdrop-filter: blur(5px);
+  position: relative;
+  overflow: hidden;
+}
+
+.reset-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.reset-btn:hover {
+  border-color: var(--gold-primary);
+  color: var(--ivory-white);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(197, 160, 89, 0.3);
+}
+
+.reset-btn:hover::before {
+  left: 100%;
+}
+
+.reset-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 15px -5px rgba(197, 160, 89, 0.2);
+}
+
+.reset-btn i {
+  transition: transform 0.3s;
+}
+
+.reset-btn:hover i {
+  transform: rotate(180deg);
+}
+        /* Efek kemenangan */
+    .victory-effect {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .victory-particle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--gold-primary);
+      border-radius: 50%;
+      animation: victory 1s ease-out forwards;
+    }
+
+    @keyframes victory {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0) translate(calc(cos(45deg) * 100px), calc(sin(45deg) * -100px));
+        opacity: 0;
+      }
+    }
+
+    /* Responsif untuk mobile dengan interaksi sentuh */
     @media (max-width: 500px) {
       .letter-slot {
-        width: 3.5rem;
+        width: 3.8rem;
         height: 4.2rem;
-        font-size: 1.8rem;
+        font-size: 2rem;
+        border-radius: 1rem;
       }
       .choice-btn {
-        width: 3.2rem;
-        height: 3.2rem;
-        font-size: 1.6rem;
+        width: 3.5rem;
+        height: 3.5rem;
+        font-size: 1.8rem;
+        border-radius: 1rem;
       }
       .game-container {
         padding: 1rem !important;
       }
+      .stat-badge {
+        padding: 0.4rem 1rem;
+        font-size: 0.85rem;
+      }
+      .stat-badge span {
+        font-size: 1rem;
+      }
     }
 
-    /* Hilangkan spinner di number (tidak dipakai) */
-    input[type=number]::-webkit-inner-spin-button {
-      -webkit-appearance: none;
+    /* Animasi loading untuk transisi level */
+    .level-transition {
+      animation: levelUp 0.5s ease-out;
+    }
+
+    @keyframes levelUp {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); filter: brightness(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    /* Efek suara visual */
+    .sound-wave {
+      display: inline-flex;
+      gap: 2px;
+      margin-left: 5px;
+    }
+
+    .sound-wave span {
+      width: 3px;
+      height: 3px;
+      background: var(--gold-primary);
+      border-radius: 1px;
+      animation: soundBounce 1s infinite;
+    }
+
+    .sound-wave span:nth-child(2) { animation-delay: 0.2s; }
+    .sound-wave span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes soundBounce {
+      0%, 100% { height: 3px; }
+      50% { height: 10px; }
     }
   </style>
 </head>
 <body>
-  <!-- Kartu utama game dengan nuansa dark luxury -->
-  <div class="game-container rounded-3xl p-6 md:p-8 mx-auto">
+  <!-- Victory Effect Container -->
+  <div id="victoryContainer" class="victory-effect"></div>
 
-    <!-- Header: hanya nama game (minimalis) + statistik kecil sejajar -->
-    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
-      <h1 class="text-4xl md:text-5xl font-light tracking-wider gold-accent" style="text-shadow: 0 2px 8px rgba(197,160,89,0.20);">QwertyAz</h1>
+  <!-- Sound Toggle Button -->
+  <button id="soundToggle" class="fixed top-4 right-4 z-50 bg-[#1e1e1e] border border-[#C5A059]/30 rounded-full p-3 text-[#C5A059] hover:border-[#C5A059] transition-all hover:scale-110 backdrop-blur-sm">
+    <i class="fas fa-volume-up text-xl"></i>
+    <div class="sound-wave" id="soundWave">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </button>
+
+  <!-- Kartu utama game -->
+  <div class="game-container rounded-3xl p-6 md:p-8 mx-auto relative overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-5 pointer-events-none">
+      <svg width="100%" height="100%">
+        <pattern id="pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+          <circle cx="20" cy="20" r="1" fill="#C5A059"/>
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#pattern)"/>
+      </svg>
+    </div>
+
+    <!-- Header dengan efek lebih mewah -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8 relative z-10">
+      <div class="flex items-center gap-3">
+        <h1 class="text-5xl md:text-6xl font-light game-title">QwertyAz</h1>
+        <div class="flex gap-1">
+          <i class="fas fa-crown text-[#C5A059] opacity-50 text-xl"></i>
+          <i class="fas fa-crown text-[#C5A059] opacity-75 text-xl"></i>
+          <i class="fas fa-crown text-[#C5A059] text-xl"></i>
+        </div>
+      </div>
       
-      <!-- Grup stat (skor & level) sangat tipis -->
+      <!-- Grup stat dengan ikon yang lebih kaya -->
       <div class="flex gap-3">
         <div class="stat-badge">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8 21 12 17 16 21"/></svg>
+          <i class="fas fa-star"></i>
           Skor <span id="scoreDisplay">0</span>
         </div>
         <div class="stat-badge">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <i class="fas fa-trophy"></i>
           Level <span id="levelDisplay">1</span>
         </div>
       </div>
     </div>
-      <!-- AREA SLOT KOSONG (tempat menyusun huruf) -->
-  <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-10 px-2">
-    <!-- 5 slot elegan, akan diisi secara dinamis via JS -->
+      <!-- Progress Bar Level -->
+  <div class="mb-6 px-2">
+    <div class="flex justify-between text-xs text-gray-500 mb-1">
+      <span>Level Progress</span>
+      <span id="progressText">0/5</span>
+    </div>
+    <div class="h-1 bg-[#2a2a2a] rounded-full overflow-hidden">
+      <div id="progressBar" class="h-full bg-gradient-to-r from-[#C5A059] to-[#D4AF37] rounded-full transition-all duration-500" style="width: 0%"></div>
+    </div>
+  </div>
+
+  <!-- AREA SLOT dengan label minimal -->
+  <div class="text-center text-gray-500 text-xs uppercase tracking-wider mb-2">Arrange Letters</div>
+  <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-8 px-2">
     <div id="slot1" class="letter-slot" data-index="0"></div>
     <div id="slot2" class="letter-slot" data-index="1"></div>
     <div id="slot3" class="letter-slot" data-index="2"></div>
@@ -197,39 +535,150 @@
     <div id="slot5" class="letter-slot" data-index="4"></div>
   </div>
 
-  <!-- PILIHAN HURUF ACAK (tombol-tombol) -->
-  <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-10" id="letterChoicesContainer">
+  <!-- Target Word Hint (samar) -->
+  <div class="text-center mb-4">
+    <span class="text-gray-600 text-sm">target: </span>
+    <span id="targetHint" class="text-[#C5A059]/50 text-sm font-mono tracking-widest">?????</span>
+  </div>
+
+  <!-- PILIHAN HURUF -->
+  <div class="text-center text-gray-500 text-xs uppercase tracking-wider mb-2">Available Letters</div>
+  <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-8" id="letterChoicesContainer">
     <!-- diisi javascript -->
   </div>
 
-  <!-- RESET / HAPUS (tombol diskrit) -->
-  <div class="flex justify-center">
+  <!-- Action Buttons dengan lebih banyak opsi -->
+  <div class="flex justify-center gap-4">
+    <button id="shuffleBtn" class="reset-btn group flex items-center gap-2">
+      <i class="fas fa-random group-hover:rotate-180 transition-transform duration-500"></i>
+      Acak
+    </button>
     <button id="resetGameBtn" class="reset-btn group flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-[#C5A059] transition"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-      Hapus & Atur Ulang
+      <i class="fas fa-undo-alt group-hover:rotate-180 transition-transform duration-500"></i>
+      Reset
+    </button>
+    <button id="hintBtn" class="reset-btn group flex items-center gap-2">
+      <i class="fas fa-lightbulb group-hover:scale-110 transition-transform duration-500"></i>
+      Petunjuk
     </button>
   </div>
+
+  <!-- Achievement Toast Container -->
+  <div id="toastContainer" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none"></div>
   </div>
   <script>
   (function(){
-    // ---------- Vanilla JavaScript (ES6) ----------
-    // Konfigurasi huruf dan target (kata dapat diubah nanti, level memengaruhi target)
+    // ---------- Enhanced JavaScript dengan Fitur Immersive ----------
+    
+    // Konfigurasi suara (menggunakan Web Audio API)
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+    let soundEnabled = true;
+
+    // Fungsi untuk inisialisasi audio context (dengan interaksi user)
+    function initAudio() {
+      if (audioCtx) return;
+      try {
+        audioCtx = new AudioContext();
+      } catch (e) {
+        console.log('Web Audio API not supported');
+      }
+    }
+
+    // Fungsi memainkan nada sederhana
+    function playSound(type) {
+      if (!soundEnabled || !audioCtx || audioCtx.state === 'suspended') return;
+      
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      
+      switch(type) {
+        case 'click':
+          oscillator.frequency.value = 800;
+          gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+          oscillator.start();
+          oscillator.stop(audioCtx.currentTime + 0.1);
+          break;
+        case 'win':
+          oscillator.frequency.value = 600;
+          gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+          oscillator.start();
+          oscillator.stop(audioCtx.currentTime + 0.3);
+          
+          // Nada kedua
+          setTimeout(() => {
+            if (!soundEnabled) return;
+            const osc2 = audioCtx.createOscillator();
+            const gain2 = audioCtx.createGain();
+            osc2.connect(gain2);
+            gain2.connect(audioCtx.destination);
+            osc2.frequency.value = 800;
+            gain2.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            osc2.start();
+            osc2.stop(audioCtx.currentTime + 0.2);
+          }, 150);
+          break;
+        case 'levelUp':
+          for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+              if (!soundEnabled) return;
+              const osc = audioCtx.createOscillator();
+              const gain = audioCtx.createGain();
+              osc.connect(gain);
+              gain.connect(audioCtx.destination);
+              osc.frequency.value = 400 + i * 200;
+              gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+              gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+              osc.start();
+              osc.stop(audioCtx.currentTime + 0.1);
+            }, i * 100);
+          }
+          break;
+      }
+    }
+
+    // Target words yang lebih beragam
     const TARGET_WORDS = [
-      ['Q','W','E','R','T'],  // level 1 (5 huruf)
+      ['Q','W','E','R','T'],  // level 1
       ['Y','U','I','O','P'],  // level 2
       ['A','S','D','F','G'],  // level 3
       ['H','J','K','L','Z'],  // level 4
-      ['Z','X','C','V','B']   // level 5 (bisa disesuaikan)
+      ['X','C','V','B','N'],  // level 5
+      ['M','Q','A','Z','W'],  // level 6
+      ['S','X','E','D','C'],  // level 7
+      ['R','F','V','T','G'],  // level 8
+      ['B','Y','H','N','U'],  // level 9
+      ['J','M','I','K','L']   // level 10
     ];
+    // Enhanced state dengan fitur tambahan
+let currentLevel = 1;
+let currentTarget = [...TARGET_WORDS[0]];
+let slots = ['', '', '', '', ''];
+let availableLetters = [];
+let usedInChoices = [false, false, false, false, false];
+let score = 0;
+let streak = 0; // Streak kemenangan beruntun
+let hintsRemaining = 3; // Jumlah petunjuk tersisa
+let achievements = [];
+let gameHistory = [];
 
-    // State game
-    let currentLevel = 1;                // level 1-indexed
-    let currentTarget = [...TARGET_WORDS[0]]; // target huruf level sekarang
-    let slots = ['', '', '', '', ''];          // isi slot (index 0-4)
-    let availableLetters = [];            // kumpulan huruf acak (berisi 5 huruf)
-    let usedInChoices = [false, false, false, false, false]; // status klik tiap tombol pilihan
-    let score = 0;
-    // Elemen DOM
+// Achievement definitions
+const ACHIEVEMENTS = {
+  FIRST_WIN: { id: 'first', name: 'First Step', icon: '🌱', condition: () => score >= 100 },
+  STREAK_3: { id: 'streak3', name: 'On Fire!', icon: '🔥', condition: () => streak >= 3 },
+  STREAK_5: { id: 'streak5', name: 'Unstoppable', icon: '⚡', condition: () => streak >= 5 },
+  LEVEL_5: { id: 'level5', name: 'Rising Star', icon: '⭐', condition: () => currentLevel >= 5 },
+  LEVEL_10: { id: 'level10', name: 'Legend', icon: '👑', condition: () => currentLevel >= 10 },
+  PERFECT: { id: 'perfect', name: 'Perfect!', icon: '💯', condition: () => gameHistory.length > 0 && gameHistory[gameHistory.length-1].perfect }
+};
+
+// Elemen DOM
 const slotEls = [
   document.getElementById('slot1'),
   document.getElementById('slot2'),
@@ -239,9 +688,18 @@ const slotEls = [
 ];
 const choicesContainer = document.getElementById('letterChoicesContainer');
 const resetBtn = document.getElementById('resetGameBtn');
+const shuffleBtn = document.getElementById('shuffleBtn');
+const hintBtn = document.getElementById('hintBtn');
 const scoreSpan = document.getElementById('scoreDisplay');
 const levelSpan = document.getElementById('levelDisplay');
-    // Helper: memperbarui tampilan slot sesuai array slots
+const targetHint = document.getElementById('targetHint');
+const progressBar = document.getElementById('progressBar');
+const progressText = document.getElementById('progressText');
+const toastContainer = document.getElementById('toastContainer');
+const soundToggle = document.getElementById('soundToggle');
+const soundWave = document.getElementById('soundWave');
+const victoryContainer = document.getElementById('victoryContainer');
+    // Enhanced utility functions
 function renderSlots() {
   for (let i = 0; i < 5; i++) {
     slotEls[i].textContent = slots[i] || '';
@@ -251,9 +709,16 @@ function renderSlots() {
       slotEls[i].classList.remove('filled');
     }
   }
+  updateProgress();
 }
 
-// Helper: mengacak huruf (dari currentTarget) untuk ditampilkan sebagai pilihan
+function updateProgress() {
+  const filledCount = slots.filter(s => s !== '').length;
+  const progress = (filledCount / 5) * 100;
+  progressBar.style.width = `${progress}%`;
+  progressText.textContent = `${filledCount}/5`;
+}
+
 function shuffleArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -262,14 +727,11 @@ function shuffleArray(arr) {
   return arr;
 }
 
-// Mengacak availableLetters berdasarkan target saat ini
 function refreshAvailableLetters() {
-  // availableLetters adalah salinan acak dari currentTarget
   availableLetters = shuffleArray([...currentTarget]);
-  usedInChoices = [false, false, false, false, false]; // reset status kepakai
+  usedInChoices = [false, false, false, false, false];
 }
 
-    // Merender semua tombol pilihan berdasarkan availableLetters & usedInChoices
 function renderChoices() {
   let htmlStr = '';
   for (let i = 0; i < availableLetters.length; i++) {
@@ -281,41 +743,112 @@ function renderChoices() {
   choicesContainer.innerHTML = htmlStr;
 }
 
-// Cek apakah semua slot sudah terisi penuh
-function areSlotsFull() {
-  return slots.every(val => val !== '');
-}
-
-// Validasi susunan huruf apakah sesuai target (menang)
-function isCorrectArrangement() {
-  for (let i = 0; i < 5; i++) {
-    if (slots[i] !== currentTarget[i]) return false;
+function showToast(message, type = 'info', duration = 3000) {
+  const toast = document.createElement('div');
+  toast.className = `bg-[#1e1e1e] border border-[#C5A059] text-white px-6 py-3 rounded-2xl shadow-2xl transform transition-all duration-500 translate-y-0 opacity-100 mb-2 backdrop-blur-sm`;
+  
+  let icon = '';
+  switch(type) {
+    case 'success': icon = '🎉'; break;
+    case 'achievement': icon = '🏆'; break;
+    case 'hint': icon = '💡'; break;
+    default: icon = 'ℹ️';
   }
-  return true;
+  
+  toast.innerHTML = `${icon} ${message}`;
+  toastContainer.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(20px)';
+    setTimeout(() => toast.remove(), 500);
+  }, duration);
 }
-    // Proses ketika user berhasil menyusun kata dengan benar
-function handleWin() {
-  // Tambah skor (base 100 * level)
-  score += 100 * currentLevel;
-  updateScoreAndLevel();
 
-  // Naikkan level jika masih ada
+function createVictoryEffect() {
+  for (let i = 0; i < 30; i++) {
+    setTimeout(() => {
+      const particle = document.createElement('div');
+      particle.className = 'victory-particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = Math.random() * 100 + '%';
+      particle.style.background = i % 2 === 0 ? '#C5A059' : '#D4AF37';
+      particle.style.width = (5 + Math.random() * 10) + 'px';
+      particle.style.height = particle.style.width;
+      victoryContainer.appendChild(particle);
+      
+      setTimeout(() => particle.remove(), 1000);
+    }, i * 50);
+  }
+}
+    // Achievement system
+function checkAchievements() {
+  Object.values(ACHIEVEMENTS).forEach(achievement => {
+    if (!achievements.includes(achievement.id) && achievement.condition()) {
+      achievements.push(achievement.id);
+      showToast(`${achievement.icon} Achievement Unlocked: ${achievement.name}`, 'achievement', 5000);
+      playSound('levelUp');
+      
+      // Bonus skor untuk achievement
+      score += 200;
+      updateScoreAndLevel();
+    }
+  });
+}
+
+// Enhanced win handler
+function handleWin() {
+  const perfect = slots.join('') === currentTarget.join('') && usedInChoices.every(v => v === true);
+  
+  // Catat history
+  gameHistory.push({
+    level: currentLevel,
+    perfect: perfect,
+    timestamp: Date.now()
+  });
+  
+  // Tambah skor
+  let pointsEarned = 100 * currentLevel;
+  if (perfect) {
+    pointsEarned *= 1.5;
+    showToast('✨ Perfect! +50% bonus!', 'success');
+  }
+  score += pointsEarned;
+  streak++;
+  
+  // Update streak bonus
+  if (streak >= 3) {
+    showToast(`🔥 Streak ${streak}!`, 'success');
+  }
+  
+  updateScoreAndLevel();
+  playSound('win');
+  createVictoryEffect();
+  showToast(`Level ${currentLevel} Complete! +${pointsEarned} points`, 'success');
+
+  // Naikkan level
   if (currentLevel < TARGET_WORDS.length) {
     currentLevel++;
-    currentTarget = [...TARGET_WORDS[currentLevel - 1]]; // array index ke level-1
-
-    // Reset slot dan available huruf
+    currentTarget = [...TARGET_WORDS[currentLevel - 1]];
+    
+    // Animasi transisi level
+    document.querySelector('.game-container').classList.add('level-transition');
+    setTimeout(() => {
+      document.querySelector('.game-container').classList.remove('level-transition');
+    }, 500);
+    
+    showToast(`🎯 Level ${currentLevel}`, 'info');
+    playSound('levelUp');
+    
     slots = ['', '', '', '', ''];
     refreshAvailableLetters();
     renderSlots();
     renderChoices();
     updateScoreAndLevel();
-
-    // Beri sedikit umpan balik halus (opsional: tambah class)
   } else {
-    // max level tercapai, bisa reset permainan atau beri notifikasi tenang
-    // untuk pengalaman mulus: reset ke level 1, skor ditambah bonus
-    score += 500; // bonus
+    // Game completed!
+    showToast('🏆 CONGRATULATIONS! You completed all levels!', 'achievement', 8000);
+    score += 1000;
     currentLevel = 1;
     currentTarget = [...TARGET_WORDS[0]];
     slots = ['', '', '', '', ''];
@@ -323,99 +856,210 @@ function handleWin() {
     renderSlots();
     renderChoices();
     updateScoreAndLevel();
-    // small visual feedback: border emas berkedip (opsional)
+    createVictoryEffect();
   }
+  
+  // Update target hint
+  targetHint.textContent = currentTarget.join('').replace(/./g, '?');
+  
+  // Cek achievements
+  checkAchievements();
 }
-
-// Update tampilan skor & level
+    // Update skor dan level
 function updateScoreAndLevel() {
   scoreSpan.textContent = score;
   levelSpan.textContent = currentLevel;
 }
-    // Event listener untuk tombol pilihan (delegasi)
+
+// Fungsi untuk memberikan petunjuk
+function useHint() {
+  if (hintsRemaining <= 0) {
+    showToast('No hints remaining!', 'info');
+    return;
+  }
+  
+  // Cari slot kosong pertama
+  const emptyIndex = slots.findIndex(s => s === '');
+  if (emptyIndex === -1) {
+    showToast('All slots are filled!', 'info');
+    return;
+  }
+  
+  // Cari huruf yang benar untuk slot tersebut
+  const correctLetter = currentTarget[emptyIndex];
+  
+  // Cari huruf tersebut di availableLetters yang belum dipakai
+  const letterIndex = availableLetters.findIndex((l, idx) => l === correctLetter && !usedInChoices[idx]);
+  
+  if (letterIndex !== -1) {
+    // Otomatis tempatkan huruf
+    slots[emptyIndex] = correctLetter;
+    usedInChoices[letterIndex] = true;
+    hintsRemaining--;
+    
+    renderSlots();
+    renderChoices();
+    playSound('click');
+    showToast(`💡 Hint used! (${hintsRemaining} left)`, 'hint');
+    
+    // Cek jika semua slot penuh
+    if (areSlotsFull() && isCorrectArrangement()) {
+      handleWin();
+    }
+  } else {
+    showToast('Cannot use hint now!', 'info');
+  }
+}
+
+// Cek slot penuh
+function areSlotsFull() {
+  return slots.every(val => val !== '');
+}
+
+// Validasi susunan
+function isCorrectArrangement() {
+  for (let i = 0; i < 5; i++) {
+    if (slots[i] !== currentTarget[i]) return false;
+  }
+  return true;
+}
+    // Event listener untuk sound toggle
+soundToggle.addEventListener('click', () => {
+  soundEnabled = !soundEnabled;
+  const icon = soundToggle.querySelector('i');
+  if (soundEnabled) {
+    icon.className = 'fas fa-volume-up text-xl';
+    soundWave.style.opacity = '1';
+    initAudio();
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    playSound('click');
+  } else {
+    icon.className = 'fas fa-volume-mute text-xl';
+    soundWave.style.opacity = '0.3';
+  }
+});
+
+// Event listener untuk pilihan huruf
 choicesContainer.addEventListener('click', (e) => {
   const choiceDiv = e.target.closest('.choice-btn');
   if (!choiceDiv) return;
-  if (choiceDiv.classList.contains('used')) return; // sudah dipakai
+  if (choiceDiv.classList.contains('used')) return;
 
   const idx = choiceDiv.dataset.choiceIndex;
   if (idx === undefined) return;
 
   const letter = availableLetters[idx];
 
-  // Cari slot kosong pertama
   const emptySlotIndex = slots.findIndex(val => val === '');
   if (emptySlotIndex === -1) {
-    // semua slot penuh, tidak bisa tambah; bisa hapus dulu (opsional abaikan)
+    showToast('All slots are filled! Try reset.', 'info');
     return;
   }
 
-  // Isi slot dengan huruf yang dipilih
+  // Efek visual dan suara
+  playSound('click');
+  
   slots[emptySlotIndex] = letter;
-  // Tandai tombol pilihan sebagai used
   usedInChoices[idx] = true;
 
-  // Update UI
   renderSlots();
   renderChoices();
 
-  // Cek apakah semua slot sudah penuh
+  // Cek jika semua slot penuh
   if (areSlotsFull()) {
-    // Validasi apakah susunannya tepat
     if (isCorrectArrangement()) {
       handleWin();
     } else {
-      // susunan salah: tidak ada feedback selain reset diam-diam? kita beri reset otomatis?
-      // sesuai permainan umum: salah maka kocok ulang pilihan & reset slot
-      // lebih baik reset pilihan (mengacak ulang availableLetters) dan kosongkan slot
-      // namun skor tidak bertambah.
-      // Untuk UX lebih baik kita reset dengan mulus.
-      // TAPI, jangan langsung reset sebelum user sempat lihat. Biarkan saja, user bisa tekan reset manual.
-      // atau kita beri opsi otomatis dengan jeda? saya pilih: jika salah, secara otomatis kosongkan dan shuffle pilihan setelah 0.2s? agak aneh.
-      // Alternatif lebih baik: saat semua slot terisi, tapi salah, kita langsung kosongkan slot dan kembalikan huruf2 ke available (tandai ulang used).
-      // Itu lebih fair: seperti "coba lagi" instan.
-
-      // Kembalikan semua huruf ke available (reset usedInChoices) dan kosongkan slots
-      // tapi untuk mempertahankan kesan profesional, kita cukup reset tanpa mengurangi skor
-      // namun agar tidak stuck: kosongkan slot, dan set usedInChoices semua false
+      // Wrong arrangement - reset dengan animasi
+      showToast('❌ Wrong arrangement, try again!', 'info');
       slots = ['', '', '', '', ''];
-      usedInChoices.fill(false); // semua huruf bisa dipilih lagi
-
-      // opsional: acak ulang availableLetters (supaya tidak urut sama)
-      availableLetters = shuffleArray([...availableLetters]); // shuffle tetap berdasarkan komposisi sama
-
+      usedInChoices.fill(false);
+      availableLetters = shuffleArray([...availableLetters]);
+      streak = 0; // Reset streak
+      
       renderSlots();
       renderChoices();
+      playSound('click');
     }
   }
 });
-          // Reset penuh (tombol reset)
+
+// Shuffle button
+shuffleBtn.addEventListener('click', () => {
+  availableLetters = shuffleArray([...availableLetters]);
+  renderChoices();
+  playSound('click');
+  showToast('🔄 Letters shuffled', 'info');
+});
+
+// Hint button
+hintBtn.addEventListener('click', useHint);
+          // Reset full game
       function resetGameFull() {
-        // Reset ke level 1, skor 0, target awal
         currentLevel = 1;
         currentTarget = [...TARGET_WORDS[0]];
         score = 0;
+        streak = 0;
+        hintsRemaining = 3;
         slots = ['', '', '', '', ''];
-        refreshAvailableLetters(); // set availableLetters acak dari target
+        refreshAvailableLetters();
         renderSlots();
         renderChoices();
         updateScoreAndLevel();
+        targetHint.textContent = '?????';
+        showToast('🔄 Game reset', 'info');
+        playSound('click');
+        
+        // Reset progress bar
+        progressBar.style.width = '0%';
+        progressText.textContent = '0/5';
       }
 
       resetBtn.addEventListener('click', resetGameFull);
 
-      // Inisialisasi pertama kali
+      // Inisialisasi audio context saat pertama kali user berinteraksi
+      document.body.addEventListener('click', function initAudioOnFirstClick() {
+        initAudio();
+        document.body.removeEventListener('click', initAudioOnFirstClick);
+      }, { once: true });
+
+      // Inisialisasi game
       (function init() {
-        currentTarget = [...TARGET_WORDS[0]]; // level 1
+        currentTarget = [...TARGET_WORDS[0]];
         slots = ['', '', '', '', ''];
-        refreshAvailableLetters(); // acak
+        refreshAvailableLetters();
         renderSlots();
         renderChoices();
         updateScoreAndLevel();
+        targetHint.textContent = '?????';
+        
+        // Set initial progress
+        progressBar.style.width = '0%';
+        progressText.textContent = '0/5';
+        
+        // Welcome toast
+        setTimeout(() => {
+          showToast('✨ Welcome to QwertyAz! ✨', 'info', 4000);
+        }, 500);
       })();
 
-      // OPTIONAL: Animasi halus untuk slot (telah dihandle css transition)
-      // tidak ada overlapping karena flex wrap rapih
+      // Auto-save score to localStorage
+      window.addEventListener('beforeunload', () => {
+        try {
+          localStorage.setItem('qwertyaz_highscore', Math.max(score, parseInt(localStorage.getItem('qwertyaz_highscore') || '0')));
+          localStorage.setItem('qwertyaz_level', currentLevel);
+        } catch (e) {}
+      });
+
+      // Load highscore
+      try {
+        const highscore = localStorage.getItem('qwertyaz_highscore');
+        if (highscore) {
+          console.log(`🏆 Highscore: ${highscore}`);
+        }
+      } catch (e) {}
 
     })();
   </script>
